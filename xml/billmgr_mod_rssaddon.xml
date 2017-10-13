@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mgrdata>
+    <mainmenu level="29">
+        <node name="productnode">
+            <node name="rss" />
+        </node>
+    </mainmenu>
+
+    <handler name="rssaddon" type="xml">
+        <func name="rssaddon" />
+    </handler>
+
+    <handler name="rssfetcher" type="xml">
+        <func name="rssfetcher" />
+    </handler>
+
+    <lang name="en">
+        <messages name="desktop">
+            <msg name="menu_rssaddon">RSS</msg>
+        </messages>
+    </lang>
+
+    <lang name="ru">
+        <messages name="desktop">
+            <msg name="menu_rssaddon">RSS</msg>
+        </messages>
+    </lang>
+</mgrdata>
