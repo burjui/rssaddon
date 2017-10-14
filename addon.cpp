@@ -2,6 +2,7 @@
 #include <fstream>
 #include <cstdlib>
 #include <iostream>
+#include <algorithm>
 #include <mgr/mgrxml.h>
 #include <mgr/mgrlog.h>
 #include <ispbin.h>
@@ -21,19 +22,35 @@ void appendTableDescription(XmlNode &metadata);
 void appendColumnDescription(XmlNode &coldata, const char *name);
 void appendMessages(XmlNode &xml);
 void appendMessage(XmlNode &messages, const char *name, const char *text);
+void appendTableParameters(XmlNode &xml);
+void appendTableRow(XmlNode &xml, const RssItem &item);
 
 int ISP_MAIN(int argc, char *argv[])
 {
 	mgr_log::Init(BINARY_NAME);
 	LogInfo("Invoked as %s", argv[0]);
 
-	ifstream exchangeFile(EXCHANGE_XML_FILE_PATH);
-
 	Xml outXml;
 	auto outXmlRoot = outXml.GetRoot();
 	outXmlRoot.SetProp("func", BINARY_NAME);
 	appendMetadata(outXmlRoot);
 	appendMessages(outXmlRoot);
+	appendTableParameters(outXmlRoot);
+
+	ifstream exchangeFile(EXCHANGE_XML_FILE_PATH);
+	Debug("%s exchange file '%s'", exchangeFile.is_open() ? "opened" : "cannot open", EXCHANGE_XML_FILE_PATH);
+	if (exchangeFile.is_open())
+	{
+		auto exchangeXml = Xml(exchangeFile);
+		string itemsXpath = "/doc/";
+		itemsXpath += RssItem::NODE_NAME;
+		auto itemNodes = exchangeXml.GetNodes(itemsXpath);
+		Debug("found %zu items", itemNodes.size());
+		for_each(itemNodes.begin(), itemNodes.end(), [&outXmlRoot] (const XmlNode &itemNode) {
+			auto rssItem = RssItem(itemNode);
+			appendTableRow(outXmlRoot, rssItem);
+		});
+	}
 
 	cout << outXml.Str(true);
 
@@ -110,4 +127,19 @@ void appendMessage(XmlNode &messages, const char *name, const char *text)
 	messages.AppendChild("msg")
 		.SetProp("name", name)
 		.SetContent(text);
+}
+
+void appendTableParameters(XmlNode &xml)
+{
+	auto tparams = xml.AppendChild("tparams");
+	tparams.AppendChild("out", "devel");
+	tparams.AppendChild("func", BINARY_NAME);
+}
+
+void appendTableRow(XmlNode &xml, const RssItem &item)
+{
+	auto elem = xml.AppendChild("elem");
+	elem.AppendChild("title", item.title);
+	elem.AppendChild("pubDate", item.pubDate);
+	elem.AppendChild("link", item.link);
 }
