@@ -31,6 +31,7 @@ int ISP_MAIN(const int argc, char *argv[])
 	mgr_log::Init(BINARY_NAME);
 	LogInfo("Invoked as %s", argv[0]);
 
+	// Fetch the RSS feed into rssResponse via libcurl
 	auto curl = curl_easy_init();
 	if (!curl)
 	{
@@ -40,6 +41,7 @@ int ISP_MAIN(const int argc, char *argv[])
 	const char *RSS_FEED_URL = "http://feeds.rucast.net/radio-t";
 	curl_easy_setopt(curl, CURLOPT_URL, RSS_FEED_URL);
     curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, responseWriter);
+
     auto curlResponseCode = curl_easy_perform(curl);
     if (curlResponseCode != CURLE_OK)
     {
@@ -48,20 +50,21 @@ int ISP_MAIN(const int argc, char *argv[])
 	}
     curl_easy_cleanup(curl);
 
-	{
-		rssResponse.seekg(0, ios::end);
-		const auto responseSize = static_cast<size_t>(rssResponse.tellg());
-		rssResponse.seekg(0, ios::beg);
-		Debug("Got RSS response (%zu bytes)", static_cast<size_t>(responseSize));
-	}
+	// Log the response size
+	rssResponse.seekg(0, ios::end);
+	const auto responseSize = static_cast<size_t>(rssResponse.tellg());
+	rssResponse.seekg(0, ios::beg);
+	Debug("Got RSS response (%zu bytes)", static_cast<size_t>(responseSize));
 
+	// Parse items from the RSS data and output them into the exchange file
 	Xml outXml;
 	auto outXmlRoot = outXml.GetRoot();
 	{
 		auto rssXml = Xml(rssResponse);
 		auto items = rssXml.GetNodes("/rss/channel/item");
 		Debug("Fetched %zu items", items.size());
-		for_each(items.begin(), items.end(), [&outXmlRoot] (const XmlNode &itemXml) {
+		for_each(items.begin(), items.end(), [&outXmlRoot] (const XmlNode &itemXml)
+		{
 			Debug("item '%s'", itemXml.FindNode("title").Str().c_str());
 			auto item = RssItem(itemXml);
 			item.appendToXmlNode(outXmlRoot);
@@ -70,6 +73,7 @@ int ISP_MAIN(const int argc, char *argv[])
 	ofstream outXmlFile(EXCHANGE_XML_FILE_PATH);
 	outXml.Save(outXmlFile, true);
 
+	// Output an empty XML just to make the core happy
 	cout << Xml().Str();
 
 	return EXIT_SUCCESS;
