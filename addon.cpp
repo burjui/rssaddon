@@ -15,13 +15,10 @@ using namespace mgr_xml;
 #define BINARY_NAME "rssaddon"
 MODULE(BINARY_NAME);
 
-XmlNode appendColumnDescription(XmlNode &coldata, const char *name)
-{
-	return coldata.AppendChild("col")
-		.SetProp("name", name)
-		.SetProp("type", "data")
-		.SetProp("sort", "alpha");
-}
+void appendMetadata(XmlNode &xml);
+void appendToolBar(XmlNode &metadata);
+void appendTableDescription(XmlNode &metadata);
+void appendColumnDescription(XmlNode &coldata, const char *name);
 
 int ISP_MAIN(int argc, char *argv[])
 {
@@ -33,12 +30,26 @@ int ISP_MAIN(int argc, char *argv[])
 	Xml outXml;
 	auto outXmlRoot = outXml.GetRoot();
 	outXmlRoot.SetProp("func", BINARY_NAME);
+	appendMetadata(outXmlRoot);
 
-	auto metadata = outXmlRoot.AppendChild("metadata")
+	cout << outXml.Str(true);
+
+	return EXIT_SUCCESS;
+}
+
+void appendMetadata(XmlNode &xml)
+{
+	auto metadata = xml.AppendChild("metadata")
 		.SetProp("name", BINARY_NAME)
 		.SetProp("type", "list")
 		.SetProp("key", "name")
 		.SetProp("mgr", "billmgr");
+	appendToolBar(metadata);
+	appendTableDescription(metadata);
+}
+
+void appendToolBar(XmlNode &metadata)
+{
 	auto toolbar = metadata.AppendChild("toolbar")
 		.SetProp("view", "buttontext");
 	auto toolgrp = toolbar.AppendChild("toolgrp")
@@ -50,13 +61,20 @@ int ISP_MAIN(int argc, char *argv[])
 		.SetProp("type", "refresh")
 		.SetProp("img", "t-new")
 		.SetProp("sprite", "yes");
+}
 
+void appendTableDescription(XmlNode &metadata)
+{
 	auto coldata = metadata.AppendChild("coldata");
 	appendColumnDescription(coldata, "title");
 	appendColumnDescription(coldata, "pubDate");
 	appendColumnDescription(coldata, "link");
+}
 
-	cout << outXml.Str(true);
-
-	return EXIT_SUCCESS;
+void appendColumnDescription(XmlNode &coldata, const char *name)
+{
+	coldata.AppendChild("col")
+		.SetProp("name", name)
+		.SetProp("type", "data")
+		.SetProp("sort", "alpha");
 }
