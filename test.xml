@@ -12,7 +12,7 @@
       </coldata>
    </metadata>
    <messages name="rssaddon">
-      <msg name="title">RSS</msg>
+      <msg name="title">Test</msg>
       <msg name="hint_name">Название</msg>
       <msg name="hint_value">Значение</msg>
       <msg name="short_new" added="common">Создать</msg>
@@ -37,6 +37,16 @@
    <p_sort>name</p_sort>
    <p_order>desc</p_order>
    <page>test.ru - domain.mary</page>
+<!--
+   <elem>
+      <name>One</name>
+      <value>Hello</value>
+   </elem>
+   <elem>
+      <name>Two</name>
+      <value>World!</value>
+   </elem>
+-->
    <p_num>1</p_num>
    <p_elems>2</p_elems>
 </doc>

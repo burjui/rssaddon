@@ -19,6 +19,8 @@ void appendMetadata(XmlNode &xml);
 void appendToolBar(XmlNode &metadata);
 void appendTableDescription(XmlNode &metadata);
 void appendColumnDescription(XmlNode &coldata, const char *name);
+void appendMessages(XmlNode &xml);
+void appendMessage(XmlNode &messages, const char *name, const char *text);
 
 int ISP_MAIN(int argc, char *argv[])
 {
@@ -31,6 +33,7 @@ int ISP_MAIN(int argc, char *argv[])
 	auto outXmlRoot = outXml.GetRoot();
 	outXmlRoot.SetProp("func", BINARY_NAME);
 	appendMetadata(outXmlRoot);
+	appendMessages(outXmlRoot);
 
 	cout << outXml.Str(true);
 
@@ -77,4 +80,34 @@ void appendColumnDescription(XmlNode &coldata, const char *name)
 		.SetProp("name", name)
 		.SetProp("type", "data")
 		.SetProp("sort", "alpha");
+}
+
+void appendMessages(XmlNode &xml)
+{
+	auto messages = xml.AppendChild("messages")
+		.SetProp("name", BINARY_NAME);
+	appendMessage(messages, "title", "Test");
+	appendMessage(messages, "hint_name", "Название");
+	appendMessage(messages, "hint_value", "Значение");
+	appendMessage(messages, "short_new", "Создать");
+	appendMessage(messages, "short_delete", "Удалить");
+	appendMessage(messages, "hint_delete", "Удалить");
+	appendMessage(messages, "hint_new", "Создать");
+	appendMessage(messages, "name", "Имя");
+	appendMessage(messages, "value", "Значение");
+	appendMessage(messages, "hint_export", "Сохранить в CSV");
+	appendMessage(messages, "hint_selectall", "Выделить все элементы списка");
+	appendMessage(messages, "hint_reloadlist", "Обновить данные");
+	appendMessage(messages, "hint_print", "Открыть версию для печати");
+	appendMessage(messages, "hint_autoupdate_stop", "Отменить автообновление текущего списка");
+	appendMessage(messages, "hint_takefavorite", "Добавить в избранное меню");
+	appendMessage(messages, "hint_takeunfavorite", "Убрать из избранного меню");
+	appendMessage(messages, "msg_tsetting", "Настроить вид таблицы");
+}
+
+void appendMessage(XmlNode &messages, const char *name, const char *text)
+{
+	messages.AppendChild("msg")
+		.SetProp("name", name)
+		.SetContent(text);
 }
