@@ -6,15 +6,13 @@ CXXFLAGS += -I/usr/local/mgr5/include
 
 WRAPPER += rssaddon rssfetcher
 
-rssaddon_SOURCES = addon.cpp
+rssaddon_SOURCES = addon.cpp rssitem.cpp
 rssaddon_FOLDER = addon
 rssaddon_LDADD = -lmgr
-#rssaddon_DLIBS = mgr
 
-rssfetcher_SOURCES = fetcher.cpp
+rssfetcher_SOURCES = fetcher.cpp rssitem.cpp
 rssfetcher_FOLDER = addon
 rssfetcher_LDADD = -lmgr
-#rssfetcher_DLIBS = mgr
 
 BASE ?= /usr/local/mgr5
 include $(BASE)/src/isp.mk

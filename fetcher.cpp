@@ -9,6 +9,7 @@
 #include <ispbin.h>
 #include <curl/curl.h>
 #include "rssitem.hpp"
+#include "common.h"
 
 using namespace std;
 using namespace mgr_log;
@@ -66,7 +67,7 @@ int ISP_MAIN(const int argc, char *argv[])
 			item.appendToXmlNode(outXmlRoot);
 		});
 	}
-	ofstream outXmlFile("/tmp/out.xml");
+	ofstream outXmlFile(EXCHANGE_XML_FILE_PATH);
 	outXml.Save(outXmlFile, true);
 
 	cout << Xml().Str();
