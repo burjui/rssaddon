@@ -30,12 +30,12 @@ int ISP_MAIN(int argc, char *argv[])
 	mgr_log::Init(BINARY_NAME);
 	LogInfo("Invoked as %s", argv[0]);
 
-	Xml outXml;
-	auto outXmlRoot = outXml.GetRoot();
-	outXmlRoot.SetProp("func", BINARY_NAME);
-	appendMetadata(outXmlRoot);
-	appendMessages(outXmlRoot);
-	appendTableParameters(outXmlRoot);
+	Xml xml;
+	auto xmlRoot = xml.GetRoot();
+	xmlRoot.SetProp("func", BINARY_NAME);
+	appendMetadata(xmlRoot);
+	appendMessages(xmlRoot);
+	appendTableParameters(xmlRoot);
 
 	ifstream exchangeFile(EXCHANGE_XML_FILE_PATH);
 	Debug("%s exchange file '%s'", exchangeFile.is_open() ? "opened" : "cannot open", EXCHANGE_XML_FILE_PATH);
@@ -46,13 +46,13 @@ int ISP_MAIN(int argc, char *argv[])
 		itemsXpath += RssItem::NODE_NAME;
 		auto itemNodes = exchangeXml.GetNodes(itemsXpath);
 		Debug("found %zu items", itemNodes.size());
-		for_each(itemNodes.begin(), itemNodes.end(), [&outXmlRoot] (const XmlNode &itemNode) {
+		for_each(itemNodes.begin(), itemNodes.end(), [&xmlRoot] (const XmlNode &itemNode) {
 			auto rssItem = RssItem(itemNode);
-			appendTableRow(outXmlRoot, rssItem);
+			appendTableRow(xmlRoot, rssItem);
 		});
 	}
 
-	cout << outXml.Str(true);
+	cout << xml.Str(true);
 
 	return EXIT_SUCCESS;
 }
@@ -103,15 +103,15 @@ void appendMessages(XmlNode &xml)
 {
 	auto messages = xml.AppendChild("messages")
 		.SetProp("name", BINARY_NAME);
-	appendMessage(messages, "title", "Test");
 	appendMessage(messages, "hint_name", "Название");
 	appendMessage(messages, "hint_value", "Значение");
 	appendMessage(messages, "short_new", "Создать");
 	appendMessage(messages, "short_delete", "Удалить");
 	appendMessage(messages, "hint_delete", "Удалить");
 	appendMessage(messages, "hint_new", "Создать");
-	appendMessage(messages, "name", "Имя");
-	appendMessage(messages, "value", "Значение");
+	appendMessage(messages, "title", "Название подкаста");
+	appendMessage(messages, "pubDate", "Дата публикации");
+	appendMessage(messages, "link", "Ссылка");
 	appendMessage(messages, "hint_export", "Сохранить в CSV");
 	appendMessage(messages, "hint_selectall", "Выделить все элементы списка");
 	appendMessage(messages, "hint_reloadlist", "Обновить данные");
