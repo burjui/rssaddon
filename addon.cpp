@@ -46,7 +46,8 @@ int ISP_MAIN(int argc, char *argv[])
 		itemsXpath += RssItem::NODE_NAME;
 		auto itemNodes = exchangeXml.GetNodes(itemsXpath);
 		Debug("found %zu items", itemNodes.size());
-		for_each(itemNodes.begin(), itemNodes.end(), [&xmlRoot] (const XmlNode &itemNode) {
+		for_each(itemNodes.begin(), itemNodes.end(), [&xmlRoot] (const XmlNode &itemNode)
+		{
 			auto rssItem = RssItem(itemNode);
 			appendTableRow(xmlRoot, rssItem);
 		});
@@ -74,9 +75,8 @@ void appendToolBar(XmlNode &metadata)
 		.SetProp("view", "buttontext");
 	auto toolgrp = toolbar.AppendChild("toolgrp")
 		.SetProp("name", "new");
-	// Fetch button
-	toolgrp.AppendChild("toolbtn")
-		.SetProp("name", "new")
+	auto fetchButton = toolgrp.AppendChild("toolbtn")
+		.SetProp("name", "fetch")
 		.SetProp("func", "rssfetcher")
 		.SetProp("type", "refresh")
 		.SetProp("img", "t-new")
@@ -105,10 +105,10 @@ void appendMessages(XmlNode &xml)
 		.SetProp("name", BINARY_NAME);
 	appendMessage(messages, "hint_name", "Название");
 	appendMessage(messages, "hint_value", "Значение");
-	appendMessage(messages, "short_new", "Создать");
+	appendMessage(messages, "short_fetch", "Загрузить");
+	appendMessage(messages, "hint_fetch", "Загрузить данные из RSS-ленты");
 	appendMessage(messages, "short_delete", "Удалить");
 	appendMessage(messages, "hint_delete", "Удалить");
-	appendMessage(messages, "hint_new", "Создать");
 	appendMessage(messages, "title", "Название подкаста");
 	appendMessage(messages, "pubDate", "Дата публикации");
 	appendMessage(messages, "link", "Ссылка");
