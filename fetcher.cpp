@@ -40,15 +40,15 @@ int ISP_MAIN(const int argc, char *argv[])
 	}
 	const char *RSS_FEED_URL = "http://feeds.rucast.net/radio-t";
 	curl_easy_setopt(curl, CURLOPT_URL, RSS_FEED_URL);
-    curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, responseWriter);
+	curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, responseWriter);
 
-    auto curlResponseCode = curl_easy_perform(curl);
-    if (curlResponseCode != CURLE_OK)
-    {
+	auto curlResponseCode = curl_easy_perform(curl);
+	if (curlResponseCode != CURLE_OK)
+	{
 		LogError("curl_easy_perform() failed for '%s': %s", RSS_FEED_URL, curl_easy_strerror(curlResponseCode));
 		return EXIT_FAILURE;
 	}
-    curl_easy_cleanup(curl);
+	curl_easy_cleanup(curl);
 
 	// Log the response size
 	rssResponse.seekg(0, ios::end);
