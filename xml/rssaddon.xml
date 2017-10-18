@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mgrdata>
+   <library name="rssaddon" />
+   
+    <handler name="rssfetcher" type="xml">
+        <func name="rssfetcher" />
+    </handler>
+
+    <metadata name="rssaddon" type="list" key="name" mgr="billmgr">
+      <toolbar view="buttontext">
+        <toolgrp name="new">
+          <toolbtn name="fetch" func="rssfetcher" type="refresh" img="t-new" sprite="yes"/>
+        </toolgrp>
+      </toolbar>
+      <coldata>
+        <col name="title" type="data" sort="alpha"/>
+        <col name="pubDate" type="data" sort="alpha"/>
+        <col name="link" type="data" sort="alpha"/>
+      </coldata>
+    </metadata>
+
+    <tparams>
+      <out>devel</out>
+      <func>rssaddon</func>
+    </tparams>
+</mgrdata>

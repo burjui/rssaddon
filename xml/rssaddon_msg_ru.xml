@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mgrdata>
+    <lang name="ru">
+        <messages name="desktop">
+            <msg name="menu_rssaddon">RSS</msg>
+        </messages>
+
+        <messages name="rssaddon">
+          <msg name="short_fetch">Загрузить</msg>
+          <msg name="hint_fetch">Загрузить данные из RSS-ленты</msg>
+          <msg name="title">Название подкаста</msg>
+          <msg name="pubDate">Дата публикации</msg>
+          <msg name="link">Ссылка</msg>
+       </messages>
+    </lang>
+</mgrdata>

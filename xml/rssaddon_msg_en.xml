@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mgrdata>
+    <lang name="en">
+        <messages name="desktop">
+            <msg name="menu_rssaddon">RSS</msg>
+        </messages>
+
+        <messages name="rssaddon">
+          <msg name="short_fetch">Fetch</msg>
+          <msg name="hint_fetch">Fetch the RSS feed</msg>
+          <msg name="title">Podcast title</msg>
+          <msg name="pubDate">Publication date</msg>
+          <msg name="link">Link</msg>
+       </messages>
+    </lang>
+</mgrdata>

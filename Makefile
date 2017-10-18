@@ -4,11 +4,12 @@ LANGS = en ru
 
 CXXFLAGS += -I/usr/local/mgr5/include
 
-WRAPPER += rssaddon rssfetcher
+LIB += rssaddon
+WRAPPER += rssfetcher
 
 rssaddon_SOURCES = addon.cpp rssitem.cpp
-rssaddon_FOLDER = addon
-rssaddon_LDADD = -lmgr
+rssaddon_FOLDER = lib
+rssaddon_LDADD = -lmgr -lbase
 
 rssfetcher_SOURCES = fetcher.cpp rssitem.cpp
 rssfetcher_FOLDER = addon
