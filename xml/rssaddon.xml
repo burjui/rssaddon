@@ -1,10 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mgrdata>
    <library name="rssaddon" />
-   
-    <handler name="rssfetcher" type="xml">
-        <func name="rssfetcher" />
-    </handler>
 
     <metadata name="rssaddon" type="list" key="name" mgr="billmgr">
       <toolbar view="buttontext">
@@ -22,5 +18,10 @@
     <tparams>
       <out>devel</out>
       <func>rssaddon</func>
+    </tparams>
+
+    <tparams>
+      <out>devel</out>
+      <func>rssfetcher</func>
     </tparams>
 </mgrdata>
