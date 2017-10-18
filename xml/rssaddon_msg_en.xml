@@ -2,10 +2,10 @@
 <mgrdata>
     <lang name="en">
         <messages name="desktop">
-            <msg name="menu_rssaddon">RSS</msg>
+            <msg name="menu_rss.list">RSS</msg>
         </messages>
 
-        <messages name="rssaddon">
+        <messages name="rss.list">
           <msg name="short_fetch">Fetch</msg>
           <msg name="hint_fetch">Fetch the RSS feed</msg>
           <msg name="title">Podcast title</msg>

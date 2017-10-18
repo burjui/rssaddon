@@ -6,7 +6,7 @@ CXXFLAGS += -I/usr/local/mgr5/include -Wall -Wextra
 
 LIB += rssaddon
 
-rssaddon_SOURCES = addon.cpp rssitem.cpp
+rssaddon_SOURCES = addon.cpp rssitem.cpp httpfetcher.cpp
 rssaddon_FOLDER = lib
 rssaddon_LDADD = -lmgr -lbase
 

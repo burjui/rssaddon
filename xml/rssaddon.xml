@@ -2,10 +2,10 @@
 <mgrdata>
    <library name="rssaddon" />
 
-    <metadata name="rssaddon" type="list" key="name" mgr="billmgr">
+    <metadata name="rss.list" type="list" key="name" mgr="billmgr">
       <toolbar view="buttontext">
         <toolgrp name="new">
-          <toolbtn name="fetch" func="rssfetcher" type="refresh" img="t-new" sprite="yes"/>
+          <toolbtn name="fetch" func="rss.fetch" type="refresh" img="t-new" sprite="yes"/>
         </toolgrp>
       </toolbar>
       <coldata>
@@ -17,11 +17,11 @@
 
     <tparams>
       <out>devel</out>
-      <func>rssaddon</func>
+      <func>rss.list</func>
     </tparams>
 
     <tparams>
       <out>devel</out>
-      <func>rssfetcher</func>
+      <func>rss.fetch</func>
     </tparams>
 </mgrdata>

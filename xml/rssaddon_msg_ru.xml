@@ -2,10 +2,10 @@
 <mgrdata>
     <lang name="ru">
         <messages name="desktop">
-            <msg name="menu_rssaddon">RSS</msg>
+            <msg name="menu_rss.list">RSS</msg>
         </messages>
 
-        <messages name="rssaddon">
+        <messages name="rss.list">
           <msg name="short_fetch">Загрузить</msg>
           <msg name="hint_fetch">Загрузить данные из RSS-ленты</msg>
           <msg name="title">Название подкаста</msg>

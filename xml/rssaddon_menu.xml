@@ -2,7 +2,7 @@
 <mgrdata>
     <mainmenu level="29">
         <node name="productnode">
-            <node name="rssaddon" />
+            <node name="rss.list" />
         </node>
     </mainmenu>
 </mgrdata>
