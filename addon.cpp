@@ -5,27 +5,57 @@
 #include <algorithm>
 #include <mgr/mgrxml.h>
 #include <mgr/mgrlog.h>
+#include <mgr/mgrdb_struct.h>
 #include <ispbin.h>
 #include <api/module.h>
 #include <api/action.h>
 #include "common.h"
 #include "rssitem.hpp"
 #include "httpfetcher.hpp"
+#include <cassert>
 
 namespace {
 
-MODULE("rssaddon");
+#define MOD_NAME "rssaddon"
+MODULE(MOD_NAME);
 
 using namespace std;
 using namespace mgr_log;
 using namespace mgr_xml;
+using namespace mgr_db;
 using namespace isp_api;
+
+mgr_db::Cache *db_cache;
+
+class RssTable : public IdTable
+{
+public:
+	StringField guid;
+	StringField title;
+	StringField pubDate;
+	StringField link;
+
+	RssTable():
+		IdTable("rss"),
+		guid(this, "guid"),
+		title(this, "title"),
+		pubDate(this, "pubDate"),
+		link(this, "link")
+	{
+	}
+};
+
+shared_ptr<RssTable> rssTable()
+{
+	return db_cache->Get<RssTable>();
+}
 
 class RssList: public ListAction
 {
 public:
 	RssList(): ListAction("rss.list", MinLevel(lvAdmin))
 	{
+		assert(rssTable());
 	}
 
 	void List(Session &session) const override
@@ -88,14 +118,46 @@ public:
 			Debug("item '%s'", itemXml.FindNode("title").Str().c_str());
 			auto item = RssItem(itemXml);
 			item.appendToXmlNode(outXmlRoot);
+			saveToDb(item);
 		});
+		db_cache->Commit();
 		ofstream outXmlFile(EXCHANGE_XML_FILE_PATH);
 		outXml.Save(outXmlFile, true);
 	}
+
+private:
+	static void saveToDb(const RssItem &item)
+	{
+		auto table = rssTable();
+		if (!table->guid.Lookup(item.guid))
+		{
+			LogInfo("Creating a record for %s", item.guid.c_str());
+			table->New();
+		}
+		LogInfo("Updating %s", item.guid.c_str());
+		table->guid = item.guid;
+		table->title = item.title;
+		table->pubDate = item.pubDate;
+		table->link = item.link;
+		table->Post();
+	}
 };
 
-MODULE_INIT(rssaddon, "")
+MODULE_INIT(db, "")
 {
+	ConnectionParams params;
+	params.type = "mysql";
+	params.db = "billmgr";
+	params.user = "coremgr";
+	params.password = "H9iJCm6ocP";
+	params.client = "rssaddon";
+	db_cache = new Cache(params);
+}
+
+MODULE_INIT(rssaddon, "db")
+{
+	mgr_log::Init(MOD_NAME);
+	db_cache->Register<RssTable>();
 	new RssList();
 	new RssFetch();
 }
