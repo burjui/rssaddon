@@ -2,11 +2,11 @@ MGR = billmgr
 PLUGIN = rssaddon
 LANGS = en ru
 
-CXXFLAGS += -I/usr/local/mgr5/include -Wall -Wextra
+CXXFLAGS += -I/usr/local/mgr5/include -Wall
 
 LIB += rssaddon
 
-rssaddon_SOURCES = addon.cpp rssitem.cpp httpfetcher.cpp
+rssaddon_SOURCES = addon.cpp rssitem.cpp httpfetcher.cpp fetch.cpp list.cpp db.cpp table.cpp
 rssaddon_FOLDER = lib
 rssaddon_LDADD = -lmgr -lbase
 
