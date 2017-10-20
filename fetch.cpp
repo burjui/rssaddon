@@ -67,7 +67,7 @@ private:
 };
 
 struct fetch;
-PROPER_MODULE_INIT(fetch, TABLE_MODULE, DB_MODULE)
+PROPER_MODULE_INIT(fetch, TABLE_MODULE)
 {
 	new RssFetch();
 }
